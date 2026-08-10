@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
+
+    <title>Edit Initiative</title>
+
+    <link rel="stylesheet"
+          href="{{ url_for('static', filename='css/style.css') }}">
+
+</head>
+
+<body>
+
+<header>
+
+    <div class="logo">
+        Edit Initiative
+    </div>
+
+    <nav>
+
+        <a href="{{ url_for('manage_initiatives') }}">
+            Back to Initiatives
+        </a>
+
+        <a href="{{ url_for('admin_dashboard') }}">
+            Dashboard
+        </a>
+
+        <a href="{{ url_for('admin_logout') }}">
+            Logout
+        </a>
+
+    </nav>
+
+</header>
+
+
+<section class="form-section">
+
+
+    <div class="form-box">
+
+        <h1>
+            Edit Initiative
+        </h1>
+
+
+        <form method="POST">
+
+
+            <label for="title">
+                Initiative Title
+            </label>
+
+
+            <input
+                type="text"
+                id="title"
+                name="title"
+                value="{{ initiative['title'] }}"
+                required>
+
+
+            <label for="description">
+                Initiative Description
+            </label>
+
+
+            <textarea
+                id="description"
+                name="description"
+                rows="6"
+                required>{{ initiative['description'] }}</textarea>
+
+
+            <label for="display_order">
+                Display Order
+            </label>
+
+
+            <input
+                type="number"
+                id="display_order"
+                name="display_order"
+                value="{{ initiative['display_order'] }}"
+                min="1"
+                required>
+
+
+            <label for="status">
+                Status
+            </label>
+
+
+            <select
+                id="status"
+                name="status">
+
+
+                <option
+                    value="1"
+                    {% if initiative['status'] == 1 %}
+                    selected
+                    {% endif %}>
+
+                    Active
+
+                </option>
+
+
+                <option
+                    value="0"
+                    {% if initiative['status'] == 0 %}
+                    selected
+                    {% endif %}>
+
+                    Inactive
+
+                </option>
+
+
+            </select>
+
+
+            <button type="submit">
+
+                Update Initiative
+
+            </button>
+
+
+        </form>
+
+    </div>
+
+
+</section>
+
+</body>
+
+</html>

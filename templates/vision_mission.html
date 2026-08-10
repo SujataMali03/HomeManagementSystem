@@ -1,0 +1,232 @@
+<!DOCTYPE html>
+
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
+
+    <title>Vision & Mission</title>
+
+    <link rel="stylesheet"
+          href="{{ url_for('static', filename='css/style.css') }}">
+
+</head>
+
+
+<body>
+
+
+<!-- =====================================================
+     HEADER
+====================================================== -->
+
+<header>
+
+    <div class="logo">
+        Home Management - Admin
+    </div>
+
+    <nav>
+
+        <a href="{{ url_for('admin_dashboard') }}">
+            Dashboard
+        </a>
+
+        <a href="{{ url_for('home') }}">
+            View Home
+        </a>
+
+        <a href="{{ url_for('admin_logout') }}">
+            Logout
+        </a>
+
+    </nav>
+
+</header>
+
+
+<!-- =====================================================
+     MAIN CONTENT
+====================================================== -->
+
+<section class="management-section">
+
+
+    <!-- PAGE HEADER -->
+
+    <div class="management-header">
+
+        <div>
+
+            <h1>
+                Vision & Mission Management
+            </h1>
+
+            <p>
+                Update the Vision and Mission displayed
+                on the Home page.
+            </p>
+
+        </div>
+
+    </div>
+
+
+    <!-- =================================================
+         SUCCESS MESSAGE
+    ================================================== -->
+
+    {% if success %}
+
+        <div class="success-message">
+
+            {{ success }}
+
+        </div>
+
+    {% endif %}
+
+
+    <!-- =================================================
+         FORM
+    ================================================== -->
+
+    <div class="form-box">
+
+
+        <form method="POST">
+
+
+            <!-- ===============================
+                 VISION
+            ================================ -->
+
+            <h2 class="form-heading">
+
+                Our Vision
+
+            </h2>
+
+
+            <label for="vision_title">
+
+                Vision Title
+
+            </label>
+
+
+            <input
+
+                type="text"
+
+                id="vision_title"
+
+                name="vision_title"
+
+                value="{{ data['vision_title'] }}"
+
+                required
+
+            >
+
+
+            <label for="vision_description">
+
+                Vision Description
+
+            </label>
+
+
+            <textarea
+
+                id="vision_description"
+
+                name="vision_description"
+
+                rows="7"
+
+                required
+
+            >{{ data['vision_description'] }}</textarea>
+
+
+            <!-- ===============================
+                 MISSION
+            ================================ -->
+
+            <h2 class="form-heading">
+
+                Our Mission
+
+            </h2>
+
+
+            <label for="mission_title">
+
+                Mission Title
+
+            </label>
+
+
+            <input
+
+                type="text"
+
+                id="mission_title"
+
+                name="mission_title"
+
+                value="{{ data['mission_title'] }}"
+
+                required
+
+            >
+
+
+            <label for="mission_description">
+
+                Mission Description
+
+            </label>
+
+
+            <textarea
+
+                id="mission_description"
+
+                name="mission_description"
+
+                rows="7"
+
+                required
+
+            >{{ data['mission_description'] }}</textarea>
+
+
+            <!-- ===============================
+                 BUTTON
+            ================================ -->
+
+            <button type="submit">
+
+                Save Changes
+
+            </button>
+
+
+        </form>
+
+
+    </div>
+
+
+</section>
+
+
+</body>
+
+</html>

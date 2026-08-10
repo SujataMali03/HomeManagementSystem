@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Add Banner</title>
+
+    <link rel="stylesheet"
+          href="{{ url_for('static', filename='css/style.css') }}">
+
+</head>
+
+<body>
+
+    <header>
+
+        <div class="logo">
+            Add Banner
+        </div>
+
+        <nav>
+            <a href="{{ url_for('manage_banners') }}">Back to Banners</a>
+            <a href="{{ url_for('admin_dashboard') }}">Dashboard</a>
+        </nav>
+
+    </header>
+
+
+    <section class="form-section">
+
+        <div class="form-box">
+
+            <h1>Add New Banner</h1>
+
+            <form method="POST">
+
+                <label>Banner Title</label>
+
+                <input
+                    type="text"
+                    name="title"
+                    placeholder="Enter banner title"
+                    required>
+
+
+                <label>Description</label>
+
+                <textarea
+                    name="description"
+                    placeholder="Enter banner description"
+                    rows="5"></textarea>
+
+
+                <label>Image URL</label>
+
+                <input
+                    type="url"
+                    name="image_url"
+                    placeholder="https://example.com/image.jpg"
+                    required>
+
+
+                <label>Display Order</label>
+
+                <input
+                    type="number"
+                    name="display_order"
+                    value="1"
+                    min="1"
+                    required>
+
+
+                <label>Status</label>
+
+                <select name="status">
+
+                    <option value="1">
+                        Active
+                    </option>
+
+                    <option value="0">
+                        Inactive
+                    </option>
+
+                </select>
+
+
+                <button type="submit">
+                    Save Banner
+                </button>
+
+            </form>
+
+        </div>
+
+    </section>
+
+</body>
+
+</html>

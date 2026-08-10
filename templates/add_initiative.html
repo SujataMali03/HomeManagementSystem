@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
+
+    <title>Add Initiative</title>
+
+    <link rel="stylesheet"
+          href="{{ url_for('static', filename='css/style.css') }}">
+
+</head>
+
+<body>
+
+<header>
+
+    <div class="logo">
+        Add Initiative
+    </div>
+
+    <nav>
+
+        <a href="{{ url_for('manage_initiatives') }}">
+            Back to Initiatives
+        </a>
+
+        <a href="{{ url_for('admin_dashboard') }}">
+            Dashboard
+        </a>
+
+    </nav>
+
+</header>
+
+
+<section class="form-section">
+
+
+    <div class="form-box">
+
+        <h1>
+            Add New Initiative
+        </h1>
+
+
+        <form method="POST">
+
+
+            <label for="title">
+                Initiative Title
+            </label>
+
+
+            <input
+                type="text"
+                id="title"
+                name="title"
+                placeholder="Example: Education Support"
+                required>
+
+
+            <label for="description">
+                Initiative Description
+            </label>
+
+
+            <textarea
+                id="description"
+                name="description"
+                rows="6"
+                placeholder="Enter initiative description..."
+                required></textarea>
+
+
+            <label for="display_order">
+                Display Order
+            </label>
+
+
+            <input
+                type="number"
+                id="display_order"
+                name="display_order"
+                value="1"
+                min="1"
+                required>
+
+
+            <label for="status">
+                Status
+            </label>
+
+
+            <select
+                id="status"
+                name="status">
+
+                <option value="1">
+                    Active
+                </option>
+
+                <option value="0">
+                    Inactive
+                </option>
+
+            </select>
+
+
+            <button type="submit">
+
+                Save Initiative
+
+            </button>
+
+
+        </form>
+
+    </div>
+
+
+</section>
+
+</body>
+
+</html>

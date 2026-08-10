@@ -1,0 +1,497 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: Arial, sans-serif;
+    line-height: 1.6;
+    color: #333;
+    background-color: #f8f9fa;
+}
+
+header {
+    background: #1f4e79;
+    color: white;
+    padding: 18px 7%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.logo {
+    font-size: 24px;
+    font-weight: bold;
+}
+
+nav a {
+    color: white;
+    text-decoration: none;
+    margin-left: 25px;
+    font-weight: bold;
+}
+
+nav a:hover {
+    text-decoration: underline;
+}
+
+.hero {
+    min-height: 450px;
+    background: linear-gradient(rgba(0,0,0,0.55), rgba(0,0,0,0.55)),
+                url("https://images.unsplash.com/photo-1488521787991-ed7bbaae773c?auto=format&fit=crop&w=1600&q=80");
+    background-size: cover;
+    background-position: center;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    color: white;
+    padding: 30px;
+}
+
+.hero h1 {
+    font-size: 48px;
+    margin-bottom: 15px;
+}
+
+.hero p {
+    font-size: 20px;
+}
+
+.section {
+    padding: 70px 8%;
+    text-align: center;
+}
+
+.section h2 {
+    font-size: 32px;
+    margin-bottom: 20px;
+    color: #1f4e79;
+}
+
+.vision-mission {
+    display: flex;
+    gap: 30px;
+    justify-content: center;
+    margin-top: 35px;
+}
+
+.info-card {
+    background: white;
+    padding: 30px;
+    border-radius: 12px;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+    width: 45%;
+}
+
+.info-card h3 {
+    color: #1f4e79;
+    margin-bottom: 15px;
+}
+
+.stats {
+    background: #1f4e79;
+    color: white;
+    display: flex;
+    justify-content: space-around;
+    flex-wrap: wrap;
+    gap: 20px;
+}
+
+.stat-card {
+    min-width: 180px;
+}
+
+.stat-card h3 {
+    font-size: 40px;
+}
+
+.stat-card p {
+    font-size: 18px;
+}
+
+.initiatives {
+    display: flex;
+    justify-content: center;
+    gap: 25px;
+    flex-wrap: wrap;
+    margin-top: 35px;
+}
+
+.initiative-card {
+    background: white;
+    width: 300px;
+    border-radius: 12px;
+    overflow: hidden;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+}
+
+.initiative-card img {
+    width: 100%;
+    height: 190px;
+    object-fit: cover;
+}
+
+.initiative-card div {
+    padding: 20px;
+}
+
+.initiative-card h3 {
+    color: #1f4e79;
+    margin-bottom: 10px;
+}
+
+footer {
+    background: #172b3a;
+    color: white;
+    text-align: center;
+    padding: 30px;
+}
+
+@media (max-width: 768px) {
+    header {
+        flex-direction: column;
+        gap: 15px;
+    }
+
+    .vision-mission {
+        flex-direction: column;
+    }
+
+    .info-card {
+        width: 100%;
+    }
+
+    .hero h1 {
+        font-size: 34px;
+    }
+}
+
+/* ================= ADMIN LOGIN ================= */
+
+.login-container {
+    min-height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background: #f0f4f8;
+}
+
+.login-box {
+    background: white;
+    width: 400px;
+    padding: 40px;
+    border-radius: 12px;
+    box-shadow: 0 5px 25px rgba(0, 0, 0, 0.15);
+}
+
+.login-box h1 {
+    text-align: center;
+    color: #1f4e79;
+    margin-bottom: 10px;
+}
+
+.login-box > p {
+    text-align: center;
+    margin-bottom: 30px;
+    color: #666;
+}
+
+.login-box label {
+    display: block;
+    margin-top: 15px;
+    margin-bottom: 6px;
+    font-weight: bold;
+}
+
+.login-box input {
+    width: 100%;
+    padding: 12px;
+    border: 1px solid #ccc;
+    border-radius: 6px;
+    font-size: 15px;
+}
+
+.login-box button {
+    width: 100%;
+    margin-top: 25px;
+    padding: 13px;
+    background: #1f4e79;
+    color: white;
+    border: none;
+    border-radius: 6px;
+    font-size: 16px;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+.login-box button:hover {
+    background: #163a5a;
+}
+
+.error-message {
+    background: #ffe0e0;
+    color: #b00020;
+    padding: 10px;
+    border-radius: 6px;
+    margin-bottom: 15px;
+    text-align: center;
+}
+
+
+/* ================= ADMIN DASHBOARD ================= */
+
+.dashboard {
+    min-height: calc(100vh - 70px);
+    padding: 60px 8%;
+    background: #f5f7fa;
+}
+
+.dashboard-header {
+    text-align: center;
+    margin-bottom: 40px;
+}
+
+.dashboard-header h1 {
+    color: #1f4e79;
+    margin-bottom: 10px;
+}
+
+.dashboard-header p {
+    color: #666;
+}
+
+.dashboard-cards {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 25px;
+}
+
+.dashboard-card {
+    background: white;
+    padding: 30px;
+    border-radius: 12px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+}
+
+.dashboard-card h2 {
+    color: #1f4e79;
+    margin-bottom: 15px;
+}
+
+.dashboard-card p {
+    color: #555;
+    margin-bottom: 20px;
+}
+
+.dashboard-button {
+    display: inline-block;
+    padding: 10px 18px;
+    background: #1f4e79;
+    color: white;
+    text-decoration: none;
+    border-radius: 6px;
+}
+
+.dashboard-button:hover {
+    background: #163a5a;
+}
+
+@media (max-width: 768px) {
+
+    .dashboard-cards {
+        grid-template-columns: 1fr;
+    }
+
+}
+
+/* ================= MANAGEMENT PAGES ================= */
+
+.management-section {
+    padding: 50px 7%;
+    min-height: calc(100vh - 70px);
+    background: #f5f7fa;
+}
+
+.management-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 30px;
+}
+
+.management-header h1 {
+    color: #1f4e79;
+    margin-bottom: 8px;
+}
+
+.management-header p {
+    color: #666;
+}
+
+.add-button {
+    background: #1f4e79;
+    color: white;
+    padding: 12px 20px;
+    text-decoration: none;
+    border-radius: 6px;
+    font-weight: bold;
+}
+
+.add-button:hover {
+    background: #163a5a;
+}
+
+.banner-table-container {
+    background: white;
+    padding: 20px;
+    border-radius: 12px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
+    overflow-x: auto;
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+table th,
+table td {
+    padding: 14px;
+    text-align: left;
+    border-bottom: 1px solid #ddd;
+}
+
+table th {
+    background: #1f4e79;
+    color: white;
+}
+
+.banner-thumbnail {
+    width: 120px;
+    height: 70px;
+    object-fit: cover;
+    border-radius: 6px;
+}
+
+.active-status {
+    color: #198754;
+    font-weight: bold;
+}
+
+.inactive-status {
+    color: #dc3545;
+    font-weight: bold;
+}
+
+.edit-button,
+.delete-button {
+    display: inline-block;
+    padding: 7px 12px;
+    text-decoration: none;
+    border-radius: 5px;
+    margin: 2px;
+}
+
+.edit-button {
+    background: #198754;
+    color: white;
+}
+
+.delete-button {
+    background: #dc3545;
+    color: white;
+}
+
+.empty-message {
+    background: white;
+    padding: 50px;
+    text-align: center;
+    border-radius: 12px;
+}
+
+
+/* ================= FORM PAGES ================= */
+
+.form-section {
+    min-height: calc(100vh - 70px);
+    padding: 50px 20px;
+    background: #f5f7fa;
+    display: flex;
+    justify-content: center;
+}
+
+.form-box {
+    background: white;
+    width: 650px;
+    max-width: 100%;
+    padding: 40px;
+    border-radius: 12px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+    height: fit-content;
+}
+
+.form-box h1 {
+    text-align: center;
+    color: #1f4e79;
+    margin-bottom: 30px;
+}
+
+.form-box label {
+    display: block;
+    margin-top: 15px;
+    margin-bottom: 7px;
+    font-weight: bold;
+}
+
+.form-box input,
+.form-box textarea,
+.form-box select {
+    width: 100%;
+    padding: 12px;
+    border: 1px solid #ccc;
+    border-radius: 6px;
+    font-size: 15px;
+    font-family: Arial, sans-serif;
+}
+
+.form-box textarea {
+    resize: vertical;
+}
+
+.form-box button {
+    width: 100%;
+    margin-top: 25px;
+    padding: 13px;
+    background: #1f4e79;
+    color: white;
+    border: none;
+    border-radius: 6px;
+    font-size: 16px;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+.form-box button:hover {
+    background: #163a5a;
+}
+/* ================= SUCCESS MESSAGE ================= */
+
+.success-message {
+    background: #d1e7dd;
+    color: #0f5132;
+    padding: 12px;
+    border-radius: 6px;
+    margin-bottom: 20px;
+    text-align: center;
+    font-weight: bold;
+}
+
+.form-heading {
+    color: #1f4e79;
+    margin-top: 25px;
+    margin-bottom: 15px;
+    border-bottom: 2px solid #eee;
+    padding-bottom: 8px;
+}
