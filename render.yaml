@@ -2,5 +2,5 @@ services:
   - type: web
     name: home-management-system
     runtime: python
-    buildCommand: pip install -r requirements.txt
+    buildCommand: pip install -r requirements.txt && python add_about_us_tables.py
     startCommand: gunicorn app:app
