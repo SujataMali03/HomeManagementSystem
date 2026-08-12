@@ -1,0 +1,503 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
+
+    <title>About Us Management</title>
+
+    <style>
+
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+            background: #f4f6f8;
+            color: #222;
+        }
+
+        .header {
+            background: #1f2937;
+            color: white;
+            padding: 20px 40px;
+
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .header h1 {
+            margin: 0;
+        }
+
+        .back {
+            color: white;
+            text-decoration: none;
+            background: #2563eb;
+            padding: 10px 18px;
+            border-radius: 6px;
+        }
+
+        .container {
+            max-width: 1100px;
+            margin: 35px auto;
+            padding: 0 20px;
+        }
+
+        .card {
+            background: white;
+            padding: 25px;
+            margin-bottom: 25px;
+            border-radius: 12px;
+
+            box-shadow:
+                0 3px 12px rgba(0,0,0,0.08);
+        }
+
+        h2 {
+            margin-top: 0;
+            color: #1f2937;
+        }
+
+        h3 {
+            color: #374151;
+        }
+
+        textarea,
+        input {
+            width: 100%;
+            padding: 12px;
+            margin-top: 8px;
+            margin-bottom: 15px;
+
+            border: 1px solid #ccc;
+            border-radius: 6px;
+
+            font-size: 15px;
+        }
+
+        textarea {
+            min-height: 120px;
+            resize: vertical;
+        }
+
+        button {
+            border: none;
+            background: #198754;
+            color: white;
+
+            padding: 10px 18px;
+
+            border-radius: 6px;
+
+            cursor: pointer;
+            font-size: 15px;
+        }
+
+        button:hover {
+            background: #146c43;
+        }
+
+        .item {
+            border: 1px solid #ddd;
+            padding: 15px;
+            margin-top: 10px;
+            border-radius: 8px;
+
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .delete {
+            background: #dc3545;
+            color: white;
+            text-decoration: none;
+
+            padding: 8px 12px;
+
+            border-radius: 5px;
+        }
+
+        .delete:hover {
+            background: #b02a37;
+        }
+
+        .empty {
+            color: #777;
+        }
+
+    </style>
+
+</head>
+
+
+<body>
+
+
+<!-- ========================================= -->
+<!-- HEADER -->
+<!-- ========================================= -->
+
+<div class="header">
+
+    <h1>
+        About Us Management
+    </h1>
+
+    <a
+        class="back"
+        href="{{ url_for('admin_dashboard') }}"
+    >
+        Back to Dashboard
+    </a>
+
+</div>
+
+
+<div class="container">
+
+
+    <!-- ========================================= -->
+    <!-- OUR STORY -->
+    <!-- ========================================= -->
+
+    <div class="card">
+
+        <h2>
+            Our Story
+        </h2>
+
+        <form method="POST">
+
+            <input
+                type="hidden"
+                name="section"
+                value="story"
+            >
+
+            <label>
+                Story Content
+            </label>
+
+            <textarea
+                name="content"
+                required
+            >{{ story["content"] }}</textarea>
+
+            <button type="submit">
+                Update Our Story
+            </button>
+
+        </form>
+
+    </div>
+
+
+    <!-- ========================================= -->
+    <!-- CORE VALUES -->
+    <!-- ========================================= -->
+
+    <div class="card">
+
+        <h2>
+            Core Values
+        </h2>
+
+
+        {% if values %}
+
+            {% for value in values %}
+
+                <div class="item">
+
+                    <strong>
+                        {{ value["value"] }}
+                    </strong>
+
+                    <a
+                        class="delete"
+                        href="{{ url_for(
+                            'delete_core_value',
+                            value_id=value['id']
+                        ) }}"
+                        onclick="return confirm(
+                            'Delete this core value?'
+                        );"
+                    >
+                        Delete
+                    </a>
+
+                </div>
+
+            {% endfor %}
+
+        {% else %}
+
+            <p class="empty">
+                No core values available.
+            </p>
+
+        {% endif %}
+
+
+        <h3>
+            Add Core Value
+        </h3>
+
+        <form method="POST">
+
+            <input
+                type="hidden"
+                name="section"
+                value="value"
+            >
+
+            <input
+                type="text"
+                name="value"
+                placeholder="Example: Integrity"
+                required
+            >
+
+            <button type="submit">
+                Add Core Value
+            </button>
+
+        </form>
+
+    </div>
+
+
+    <!-- ========================================= -->
+    <!-- PROGRAMS -->
+    <!-- ========================================= -->
+
+    <div class="card">
+
+        <h2>
+            Programs
+        </h2>
+
+
+        {% if programs %}
+
+            {% for program in programs %}
+
+                <div class="item">
+
+                    <div>
+
+                        <strong>
+                            {{ program["name"] }}
+                        </strong>
+
+                        <p>
+                            {{ program["description"] }}
+                        </p>
+
+                    </div>
+
+                    <a
+                        class="delete"
+                        href="{{ url_for(
+                            'delete_program',
+                            program_id=program['id']
+                        ) }}"
+                        onclick="return confirm(
+                            'Delete this program?'
+                        );"
+                    >
+                        Delete
+                    </a>
+
+                </div>
+
+            {% endfor %}
+
+        {% else %}
+
+            <p class="empty">
+                No programs available.
+            </p>
+
+        {% endif %}
+
+
+        <h3>
+            Add Program
+        </h3>
+
+        <form method="POST">
+
+            <input
+                type="hidden"
+                name="section"
+                value="program"
+            >
+
+            <label>
+                Program Name
+            </label>
+
+            <input
+                type="text"
+                name="name"
+                placeholder="Example: Child Education"
+                required
+            >
+
+            <label>
+                Description
+            </label>
+
+            <textarea
+                name="description"
+                placeholder="Enter program description"
+            ></textarea>
+
+            <button type="submit">
+                Add Program
+            </button>
+
+        </form>
+
+    </div>
+
+
+    <!-- ========================================= -->
+    <!-- TEAM MEMBERS -->
+    <!-- ========================================= -->
+
+    <div class="card">
+
+        <h2>
+            Team Members
+        </h2>
+
+
+        {% if team_members %}
+
+            {% for member in team_members %}
+
+                <div class="item">
+
+                    <div>
+
+                        <strong>
+                            {{ member["name"] }}
+                        </strong>
+
+                        <p>
+                            {{ member["role"] }}
+                        </p>
+
+                        {% if member["image_url"] %}
+
+                            <img
+                                src="{{ member['image_url'] }}"
+                                width="100"
+                                alt="Team Member"
+                            >
+
+                        {% endif %}
+
+                    </div>
+
+
+                    <a
+                        class="delete"
+                        href="{{ url_for(
+                            'delete_team_member',
+                            team_id=member['id']
+                        ) }}"
+                        onclick="return confirm(
+                            'Delete this team member?'
+                        );"
+                    >
+                        Delete
+                    </a>
+
+                </div>
+
+            {% endfor %}
+
+        {% else %}
+
+            <p class="empty">
+                No team members available.
+            </p>
+
+        {% endif %}
+
+
+        <h3>
+            Add Team Member
+        </h3>
+
+
+        <form method="POST">
+
+            <input
+                type="hidden"
+                name="section"
+                value="team"
+            >
+
+            <label>
+                Name
+            </label>
+
+            <input
+                type="text"
+                name="name"
+                placeholder="Example: NGO Founder"
+                required
+            >
+
+
+            <label>
+                Role
+            </label>
+
+            <input
+                type="text"
+                name="role"
+                placeholder="Example: Founder"
+                required
+            >
+
+
+            <label>
+                Image URL
+            </label>
+
+            <input
+                type="text"
+                name="image_url"
+                placeholder="https://example.com/image.jpg"
+            >
+
+
+            <button type="submit">
+                Add Team Member
+            </button>
+
+        </form>
+
+    </div>
+
+
+</div>
+
+
+</body>
+
+</html>

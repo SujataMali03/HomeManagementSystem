@@ -1010,7 +1010,234 @@ def delete_initiative(initiative_id):
         url_for("manage_initiatives")
     )
 
+# =========================================================
+# ABOUT US MANAGEMENT
+# =========================================================
+# =========================================================
+# PUBLIC ABOUT US
+# =========================================================
 
+@app.route("/about-us")
+def about_us():
+
+    connection = get_db_connection()
+
+    story = connection.execute(
+        "SELECT * FROM our_story LIMIT 1"
+    ).fetchone()
+
+    values = connection.execute(
+        "SELECT * FROM core_values ORDER BY id"
+    ).fetchall()
+
+    programs = connection.execute(
+        "SELECT * FROM programs ORDER BY id"
+    ).fetchall()
+
+    team_members = connection.execute(
+        "SELECT * FROM team_members ORDER BY id"
+    ).fetchall()
+
+    connection.close()
+
+    return render_template(
+        "about_us.html",
+        story=story,
+        values=values,
+        programs=programs,
+        team_members=team_members
+    )
+
+
+# =========================================================
+# ADMIN ABOUT US
+# =========================================================
+@app.route("/admin/about-us", methods=["GET", "POST"])
+def manage_about_us():
+
+    if not session.get("admin_logged_in"):
+        return redirect(url_for("admin_login"))
+
+    connection = get_db_connection()
+
+    if request.method == "POST":
+
+        section = request.form.get("section")
+
+        # -------------------------
+        # OUR STORY
+        # -------------------------
+        if section == "story":
+
+            content = request.form.get("content")
+
+            connection.execute("""
+                UPDATE our_story
+                SET content = ?,
+                    updated_at = CURRENT_TIMESTAMP
+                WHERE id = 1
+            """, (content,))
+
+        # -------------------------
+        # CORE VALUE
+        # -------------------------
+        elif section == "value":
+
+            value = request.form.get("value")
+
+            if value:
+                connection.execute("""
+                    INSERT INTO core_values (value)
+                    VALUES (?)
+                """, (value,))
+
+        # -------------------------
+        # PROGRAM
+        # -------------------------
+        elif section == "program":
+
+            name = request.form.get("name")
+            description = request.form.get("description")
+
+            if name:
+                connection.execute("""
+                    INSERT INTO programs (name, description)
+                    VALUES (?, ?)
+                """, (name, description))
+
+        # -------------------------
+        # TEAM MEMBER
+        # -------------------------
+        elif section == "team":
+
+            name = request.form.get("name")
+            role = request.form.get("role")
+            image_url = request.form.get("image_url")
+
+            if name and role:
+
+                connection.execute("""
+                    INSERT INTO team_members
+                    (name, role, image_url)
+                    VALUES (?, ?, ?)
+                """, (name, role, image_url))
+
+        connection.commit()
+
+    # Get Our Story
+    story = connection.execute("""
+        SELECT *
+        FROM our_story
+        WHERE id = 1
+    """).fetchone()
+
+    # Get Core Values
+    values = connection.execute("""
+        SELECT *
+        FROM core_values
+        ORDER BY id
+    """).fetchall()
+
+    # Get Programs
+    programs = connection.execute("""
+        SELECT *
+        FROM programs
+        ORDER BY id
+    """).fetchall()
+
+    # Get Team Members
+    team_members = connection.execute("""
+        SELECT *
+        FROM team_members
+        ORDER BY id
+    """).fetchall()
+
+    connection.close()
+
+    return render_template(
+        "about_us_admin.html",
+        story=story,
+        values=values,
+        programs=programs,
+        team_members=team_members
+    )
+
+
+# =========================================================
+# DELETE CORE VALUE
+# =========================================================
+
+@app.route("/admin/about-us/value/delete/<int:value_id>")
+def delete_core_value(value_id):
+
+    if not session.get("admin_logged_in"):
+        return redirect(url_for("admin_login"))
+
+    connection = get_db_connection()
+
+    connection.execute(
+        "DELETE FROM core_values WHERE id = ?",
+        (value_id,)
+    )
+
+    connection.commit()
+    connection.close()
+
+    return redirect(url_for("manage_about_us"))
+
+
+# =========================================================
+# DELETE PROGRAM
+# =========================================================
+
+@app.route("/admin/about-us/program/delete/<int:program_id>")
+def delete_program(program_id):
+
+    if not session.get("admin_logged_in"):
+        return redirect(url_for("admin_login"))
+
+    connection = get_db_connection()
+
+    connection.execute(
+        "DELETE FROM programs WHERE id = ?",
+        (program_id,)
+    )
+
+    connection.commit()
+    connection.close()
+
+    return redirect(url_for("manage_about_us"))
+
+
+# =========================================================
+# DELETE TEAM MEMBER
+# =========================================================
+
+@app.route("/admin/about-us/team/delete/<int:team_id>")
+def delete_team_member(team_id):
+
+    if not session.get("admin_logged_in"):
+        return redirect(url_for("admin_login"))
+
+    connection = get_db_connection()
+
+    connection.execute(
+        "DELETE FROM team_members WHERE id = ?",
+        (team_id,)
+    )
+
+    connection.commit()
+    connection.close()
+
+    return redirect(url_for("manage_about_us"))
+
+
+# =========================================================
+# RUN APPLICATION
+# =========================================================
+
+if __name__ == "__main__":
+    app.run(debug=True)
 # =========================================================
 # RUN APPLICATION
 # =========================================================
