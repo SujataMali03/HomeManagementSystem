@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Edit Press Release</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background: #f4f6f8;
+            padding: 40px;
+        }
+
+        .container {
+            max-width: 700px;
+            margin: auto;
+            background: white;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+
+        label {
+            display: block;
+            margin-top: 15px;
+            margin-bottom: 6px;
+            font-weight: bold;
+        }
+
+        input, textarea {
+            width: 100%;
+            padding: 10px;
+            box-sizing: border-box;
+        }
+
+        textarea {
+            min-height: 150px;
+        }
+
+        button {
+            margin-top: 20px;
+            padding: 11px 20px;
+            background: #007bff;
+            color: white;
+            border: none;
+            border-radius: 5px;
+        }
+
+        .back {
+            display: inline-block;
+            margin-top: 15px;
+        }
+    </style>
+</head>
+
+<body>
+
+<div class="container">
+
+    <h1>Edit Press Release</h1>
+
+    <form method="POST">
+
+        <label>Title</label>
+        <input
+            type="text"
+            name="title"
+            value="{{ press_release['title'] }}"
+            required
+        >
+
+        <label>Description</label>
+        <textarea name="description" required>{{ press_release['description'] }}</textarea>
+
+        <label>Release Date</label>
+        <input
+            type="date"
+            name="release_date"
+            value="{{ press_release['release_date'] }}"
+            required
+        >
+
+        <button type="submit">Update Press Release</button>
+
+    </form>
+
+    <a class="back" href="{{ url_for('manage_media') }}">
+        ← Back to Media Management
+    </a>
+
+</div>
+
+</body>
+</html>

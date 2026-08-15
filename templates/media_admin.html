@@ -1,0 +1,370 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Media Management</title>
+
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+            background: #f4f6f8;
+            margin: 0;
+            padding: 30px;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: auto;
+        }
+
+        .top-bar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 30px;
+        }
+
+        h1 {
+            margin: 0;
+        }
+
+        .back {
+            text-decoration: none;
+            color: #333;
+            font-weight: bold;
+        }
+
+        .section {
+            background: white;
+            padding: 25px;
+            margin-bottom: 25px;
+            border-radius: 10px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+        }
+
+        .section-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+
+        .section-header h2 {
+            margin: 0;
+        }
+
+        .btn {
+            display: inline-block;
+            padding: 9px 15px;
+            background: #007bff;
+            color: white;
+            text-decoration: none;
+            border-radius: 5px;
+            margin: 3px;
+        }
+
+        .btn:hover {
+            background: #0056b3;
+        }
+
+        .delete {
+            background: #dc3545;
+        }
+
+        .delete:hover {
+            background: #a71d2a;
+        }
+
+        .edit {
+            background: #28a745;
+        }
+
+        .edit:hover {
+            background: #1e7e34;
+        }
+
+        .item {
+            border: 1px solid #ddd;
+            padding: 15px;
+            margin-bottom: 12px;
+            border-radius: 7px;
+        }
+
+        .item h3 {
+            margin-top: 0;
+        }
+
+        .item p {
+            color: #555;
+        }
+
+        .empty {
+            color: #777;
+            font-style: italic;
+        }
+
+        .image-preview {
+            max-width: 180px;
+            max-height: 120px;
+            display: block;
+            margin-bottom: 10px;
+        }
+
+        .video-link,
+        .coverage-link {
+            word-break: break-all;
+        }
+    </style>
+</head>
+
+<body>
+
+<div class="container">
+
+    <div class="top-bar">
+
+        <h1>Media Management</h1>
+
+        <a class="back" href="{{ url_for('admin_dashboard') }}">
+            ← Back to Dashboard
+        </a>
+
+    </div>
+
+
+    <!-- PRESS RELEASES -->
+
+    <div class="section">
+
+        <div class="section-header">
+
+            <h2>Press Releases</h2>
+
+            <a class="btn"
+               href="{{ url_for('add_press_release') }}">
+                + Add Press Release
+            </a>
+
+        </div>
+
+
+        {% if press_releases %}
+
+            {% for release in press_releases %}
+
+            <div class="item">
+
+                <h3>{{ release['title'] }}</h3>
+
+                <p>
+                    {{ release['description'] }}
+                </p>
+
+                <p>
+                    <strong>Release Date:</strong>
+                    {{ release['release_date'] }}
+                </p>
+
+                <a class="btn edit"
+                   href="{{ url_for('edit_press_release', press_release_id=release['id']) }}">
+                    Edit
+                </a>
+
+                <a class="btn delete"
+                   href="{{ url_for('delete_press_release', press_release_id=release['id']) }}"
+                   onclick="return confirm('Delete this press release?');">
+                    Delete
+                </a>
+
+            </div>
+
+            {% endfor %}
+
+        {% else %}
+
+            <p class="empty">
+                No press releases available.
+            </p>
+
+        {% endif %}
+
+    </div>
+
+
+    <!-- MEDIA COVERAGE -->
+
+    <div class="section">
+
+        <div class="section-header">
+
+            <h2>Media Coverage</h2>
+
+            <a class="btn"
+               href="{{ url_for('add_media_coverage') }}">
+                + Add Media Coverage
+            </a>
+
+        </div>
+
+
+        {% if media_coverage %}
+
+            {% for coverage in media_coverage %}
+
+            <div class="item">
+
+                <h3>{{ coverage['title'] }}</h3>
+
+                <p class="coverage-link">
+                    <strong>URL:</strong>
+                    <a href="{{ coverage['url'] }}"
+                       target="_blank">
+                        {{ coverage['url'] }}
+                    </a>
+                </p>
+
+                <a class="btn edit"
+                   href="{{ url_for('edit_media_coverage', coverage_id=coverage['id']) }}">
+                    Edit
+                </a>
+
+                <a class="btn delete"
+                   href="{{ url_for('delete_media_coverage', coverage_id=coverage['id']) }}"
+                   onclick="return confirm('Delete this media coverage?');">
+                    Delete
+                </a>
+
+            </div>
+
+            {% endfor %}
+
+        {% else %}
+
+            <p class="empty">
+                No media coverage available.
+            </p>
+
+        {% endif %}
+
+    </div>
+
+
+    <!-- IMAGE GALLERY -->
+
+    <div class="section">
+
+        <div class="section-header">
+
+            <h2>Image Gallery</h2>
+
+            <a class="btn"
+               href="{{ url_for('add_media_image') }}">
+                + Add Image
+            </a>
+
+        </div>
+
+
+        {% if images %}
+
+            {% for image in images %}
+
+            <div class="item">
+
+                <img
+                    class="image-preview"
+                    src="{{ image['image_path'] }}"
+                    alt="{{ image['description'] or 'Gallery Image' }}"
+                >
+
+                <p>
+                    {{ image['description'] or 'No description' }}
+                </p>
+
+                <a class="btn delete"
+                   href="{{ url_for('delete_media_image', image_id=image['id']) }}"
+                   onclick="return confirm('Delete this image?');">
+                    Delete
+                </a>
+
+            </div>
+
+            {% endfor %}
+
+        {% else %}
+
+            <p class="empty">
+                No images available.
+            </p>
+
+        {% endif %}
+
+    </div>
+
+
+    <!-- VIDEOS -->
+
+    <div class="section">
+
+        <div class="section-header">
+
+            <h2>Videos</h2>
+
+            <a class="btn"
+               href="{{ url_for('add_media_video') }}">
+                + Add Video
+            </a>
+
+        </div>
+
+
+        {% if videos %}
+
+            {% for video in videos %}
+
+            <div class="item">
+
+                <h3>Video</h3>
+
+                <p>
+                    {{ video['description'] or 'No description' }}
+                </p>
+
+                <p class="video-link">
+                    <strong>URL:</strong>
+                    <a href="{{ video['video_url'] }}"
+                       target="_blank">
+                        {{ video['video_url'] }}
+                    </a>
+                </p>
+
+                <a class="btn delete"
+                   href="{{ url_for('delete_media_video', video_id=video['id']) }}"
+                   onclick="return confirm('Delete this video?');">
+                    Delete
+                </a>
+
+            </div>
+
+            {% endfor %}
+
+        {% else %}
+
+            <p class="empty">
+                No videos available.
+            </p>
+
+        {% endif %}
+
+    </div>
+
+</div>
+
+</body>
+</html>

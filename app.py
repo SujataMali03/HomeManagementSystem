@@ -1233,15 +1233,411 @@ def delete_team_member(team_id):
 
 
 # =========================================================
+# MEDIA MANAGEMENT
+# =========================================================
+
+@app.route("/admin/media")
+def manage_media():
+
+    if not session.get("admin_logged_in"):
+        return redirect(url_for("admin_login"))
+
+    connection = get_db_connection()
+
+    press_releases = connection.execute(
+        "SELECT * FROM press_releases ORDER BY release_date DESC"
+    ).fetchall()
+
+    media_coverage = connection.execute(
+        "SELECT * FROM media_coverage ORDER BY created_at DESC"
+    ).fetchall()
+
+    images = connection.execute(
+        "SELECT * FROM image_gallery ORDER BY uploaded_at DESC"
+    ).fetchall()
+
+    videos = connection.execute(
+        "SELECT * FROM videos ORDER BY uploaded_at DESC"
+    ).fetchall()
+
+    connection.close()
+
+    return render_template(
+        "media_admin.html",
+        press_releases=press_releases,
+        media_coverage=media_coverage,
+        images=images,
+        videos=videos
+    )
+
+
+# =========================================================
+# PUBLIC MEDIA
+# =========================================================
+
+@app.route("/media")
+def media():
+
+    connection = get_db_connection()
+
+    press_releases = connection.execute(
+        "SELECT * FROM press_releases ORDER BY release_date DESC"
+    ).fetchall()
+
+    media_coverage = connection.execute(
+        "SELECT * FROM media_coverage ORDER BY created_at DESC"
+    ).fetchall()
+
+    images = connection.execute(
+        "SELECT * FROM image_gallery ORDER BY uploaded_at DESC"
+    ).fetchall()
+
+    videos = connection.execute(
+        "SELECT * FROM videos ORDER BY uploaded_at DESC"
+    ).fetchall()
+
+    connection.close()
+
+    return render_template(
+        "media.html",
+        press_releases=press_releases,
+        media_coverage=media_coverage,
+        images=images,
+        videos=videos
+    )
+
+# =========================================================
+# PRESS RELEASES
+# =========================================================
+
+@app.route("/admin/media/press-release/add", methods=["GET", "POST"])
+def add_press_release():
+
+    if not session.get("admin_logged_in"):
+        return redirect(url_for("admin_login"))
+
+    if request.method == "POST":
+
+        title = request.form.get("title")
+        description = request.form.get("description")
+        release_date = request.form.get("release_date")
+
+        connection = get_db_connection()
+
+        connection.execute(
+            """
+            INSERT INTO press_releases
+            (title, description, release_date)
+            VALUES (?, ?, ?)
+            """,
+            (title, description, release_date)
+        )
+
+        connection.commit()
+        connection.close()
+
+        return redirect(url_for("manage_media"))
+
+    return render_template("add_press_release.html")
+# =========================================================
+# EDIT PRESS RELEASE
+# =========================================================
+
+@app.route(
+    "/admin/media/press-release/edit/<int:press_release_id>",
+    methods=["GET", "POST"]
+)
+def edit_press_release(press_release_id):
+
+    if not session.get("admin_logged_in"):
+        return redirect(url_for("admin_login"))
+
+    connection = get_db_connection()
+
+    press_release = connection.execute(
+        "SELECT * FROM press_releases WHERE id = ?",
+        (press_release_id,)
+    ).fetchone()
+
+    if press_release is None:
+        connection.close()
+        return "Press release not found", 404
+
+    if request.method == "POST":
+
+        title = request.form.get("title")
+        description = request.form.get("description")
+        release_date = request.form.get("release_date")
+
+        connection.execute(
+            """
+            UPDATE press_releases
+            SET title = ?,
+                description = ?,
+                release_date = ?,
+                updated_at = CURRENT_TIMESTAMP
+            WHERE id = ?
+            """,
+            (
+                title,
+                description,
+                release_date,
+                press_release_id
+            )
+        )
+
+        connection.commit()
+        connection.close()
+
+        return redirect(url_for("manage_media"))
+
+    connection.close()
+
+    return render_template(
+        "edit_press_release.html",
+        press_release=press_release
+    )
+
+
+# =========================================================
+# DELETE PRESS RELEASE
+# =========================================================
+
+@app.route(
+    "/admin/media/press-release/delete/<int:press_release_id>"
+)
+def delete_press_release(press_release_id):
+
+    if not session.get("admin_logged_in"):
+        return redirect(url_for("admin_login"))
+
+    connection = get_db_connection()
+
+    connection.execute(
+        "DELETE FROM press_releases WHERE id = ?",
+        (press_release_id,)
+    )
+
+    connection.commit()
+    connection.close()
+
+    return redirect(url_for("manage_media"))
+# =========================================================
+# MEDIA COVERAGE
+# =========================================================
+
+@app.route("/admin/media/coverage/add", methods=["GET", "POST"])
+def add_media_coverage():
+
+    if not session.get("admin_logged_in"):
+        return redirect(url_for("admin_login"))
+
+    if request.method == "POST":
+
+        title = request.form.get("title")
+        url = request.form.get("url")
+
+        connection = get_db_connection()
+
+        connection.execute(
+            """
+            INSERT INTO media_coverage
+            (title, url)
+            VALUES (?, ?)
+            """,
+            (title, url)
+        )
+
+        connection.commit()
+        connection.close()
+
+        return redirect(url_for("manage_media"))
+
+    return render_template("add_media_coverage.html")
+
+# =========================================================
+# EDIT MEDIA COVERAGE
+# =========================================================
+
+@app.route(
+    "/admin/media/coverage/edit/<int:coverage_id>",
+    methods=["GET", "POST"]
+)
+def edit_media_coverage(coverage_id):
+
+    if not session.get("admin_logged_in"):
+        return redirect(url_for("admin_login"))
+
+    connection = get_db_connection()
+
+    coverage = connection.execute(
+        "SELECT * FROM media_coverage WHERE id = ?",
+        (coverage_id,)
+    ).fetchone()
+
+    if coverage is None:
+        connection.close()
+        return "Media coverage not found", 404
+
+    if request.method == "POST":
+
+        title = request.form.get("title")
+        url = request.form.get("url")
+
+        connection.execute(
+            """
+            UPDATE media_coverage
+            SET title = ?,
+                url = ?,
+                updated_at = CURRENT_TIMESTAMP
+            WHERE id = ?
+            """,
+            (title, url, coverage_id)
+        )
+
+        connection.commit()
+        connection.close()
+
+        return redirect(url_for("manage_media"))
+
+    connection.close()
+
+    return render_template(
+        "edit_media_coverage.html",
+        coverage=coverage
+    )
+
+# =========================================================
+# DELETE MEDIA COVERAGE
+# =========================================================
+
+@app.route("/admin/media/coverage/delete/<int:coverage_id>")
+def delete_media_coverage(coverage_id):
+
+    if not session.get("admin_logged_in"):
+        return redirect(url_for("admin_login"))
+
+    connection = get_db_connection()
+
+    connection.execute(
+        "DELETE FROM media_coverage WHERE id = ?",
+        (coverage_id,)
+    )
+
+    connection.commit()
+    connection.close()
+
+    return redirect(url_for("manage_media"))
+# =========================================================
+# ADD MEDIA IMAGE
+# =========================================================
+
+@app.route("/admin/media/image/add", methods=["GET", "POST"])
+def add_media_image():
+
+    if not session.get("admin_logged_in"):
+        return redirect(url_for("admin_login"))
+
+    if request.method == "POST":
+
+        image_path = request.form.get("image_path")
+        description = request.form.get("description")
+
+        connection = get_db_connection()
+
+        connection.execute(
+            """
+            INSERT INTO image_gallery
+            (image_path, description)
+            VALUES (?, ?)
+            """,
+            (image_path, description)
+        )
+
+        connection.commit()
+        connection.close()
+
+        return redirect(url_for("manage_media"))
+
+    return render_template("add_media_image.html")
+# =========================================================
+# DELETE MEDIA IMAGE
+# =========================================================
+
+@app.route("/admin/media/image/delete/<int:image_id>")
+def delete_media_image(image_id):
+
+    if not session.get("admin_logged_in"):
+        return redirect(url_for("admin_login"))
+
+    connection = get_db_connection()
+
+    connection.execute(
+        "DELETE FROM image_gallery WHERE id = ?",
+        (image_id,)
+    )
+
+    connection.commit()
+    connection.close()
+
+    return redirect(url_for("manage_media"))
+# =========================================================
+# ADD MEDIA VIDEO
+# =========================================================
+
+@app.route("/admin/media/video/add", methods=["GET", "POST"])
+def add_media_video():
+
+    if not session.get("admin_logged_in"):
+        return redirect(url_for("admin_login"))
+
+    if request.method == "POST":
+
+        video_url = request.form.get("video_url")
+        description = request.form.get("description")
+
+        connection = get_db_connection()
+
+        connection.execute(
+            """
+            INSERT INTO videos
+            (video_url, description)
+            VALUES (?, ?)
+            """,
+            (video_url, description)
+        )
+
+        connection.commit()
+        connection.close()
+
+        return redirect(url_for("manage_media"))
+
+    return render_template("add_media_video.html")
+
+# =========================================================
+# DELETE MEDIA VIDEO
+# =========================================================
+
+@app.route("/admin/media/video/delete/<int:video_id>")
+def delete_media_video(video_id):
+
+    if not session.get("admin_logged_in"):
+        return redirect(url_for("admin_login"))
+
+    connection = get_db_connection()
+
+    connection.execute(
+        "DELETE FROM videos WHERE id = ?",
+        (video_id,)
+    )
+
+    connection.commit()
+    connection.close()
+
+    return redirect(url_for("manage_media"))
+# =========================================================
 # RUN APPLICATION
 # =========================================================
 
 if __name__ == "__main__":
-    app.run(debug=True)
-# =========================================================
-# RUN APPLICATION
-# =========================================================
-
-if __name__ == "__main__":
-
     app.run(debug=True)

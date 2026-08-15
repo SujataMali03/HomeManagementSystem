@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Edit Media Coverage</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background: #f4f6f8;
+            padding: 40px;
+        }
+
+        .container {
+            max-width: 700px;
+            margin: auto;
+            background: white;
+            padding: 30px;
+            border-radius: 10px;
+        }
+
+        label {
+            display: block;
+            margin-top: 15px;
+            margin-bottom: 6px;
+            font-weight: bold;
+        }
+
+        input {
+            width: 100%;
+            padding: 10px;
+            box-sizing: border-box;
+        }
+
+        button {
+            margin-top: 20px;
+            padding: 11px 20px;
+            background: #007bff;
+            color: white;
+            border: none;
+            border-radius: 5px;
+        }
+
+        .back {
+            display: inline-block;
+            margin-top: 15px;
+        }
+    </style>
+</head>
+
+<body>
+
+<div class="container">
+
+    <h1>Edit Media Coverage</h1>
+
+    <form method="POST">
+
+        <label>Title</label>
+        <input
+            type="text"
+            name="title"
+            value="{{ coverage['title'] }}"
+            required
+        >
+
+        <label>Media Coverage URL</label>
+        <input
+            type="url"
+            name="url"
+            value="{{ coverage['url'] }}"
+            required
+        >
+
+        <button type="submit">Update Media Coverage</button>
+
+    </form>
+
+    <a class="back" href="{{ url_for('manage_media') }}">
+        ← Back to Media Management
+    </a>
+
+</div>
+
+</body>
+</html>
