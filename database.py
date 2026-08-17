@@ -14,10 +14,12 @@ def get_db_connection():
 def init_database():
 
     connection = get_db_connection()
-
     cursor = connection.cursor()
 
-    # Admin users table
+    # ============================================================
+    # ADMIN USERS TABLE
+    # ============================================================
+
     cursor.execute("""
         CREATE TABLE IF NOT EXISTS users (
             id INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -26,7 +28,10 @@ def init_database():
         )
     """)
 
-    # Banner table
+    # ============================================================
+    # BANNER TABLE
+    # ============================================================
+
     cursor.execute("""
         CREATE TABLE IF NOT EXISTS banners (
             id INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -38,7 +43,10 @@ def init_database():
         )
     """)
 
-    # Vision and Mission table
+    # ============================================================
+    # VISION AND MISSION TABLE
+    # ============================================================
+
     cursor.execute("""
         CREATE TABLE IF NOT EXISTS vision_mission (
             id INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -49,7 +57,10 @@ def init_database():
         )
     """)
 
-    # Statistics table
+    # ============================================================
+    # STATISTICS TABLE
+    # ============================================================
+
     cursor.execute("""
         CREATE TABLE IF NOT EXISTS statistics (
             id INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -60,7 +71,10 @@ def init_database():
         )
     """)
 
-    # Initiatives table
+    # ============================================================
+    # INITIATIVES TABLE
+    # ============================================================
+
     cursor.execute("""
         CREATE TABLE IF NOT EXISTS initiatives (
             id INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -72,7 +86,57 @@ def init_database():
         )
     """)
 
-    # Create default admin account
+    # ============================================================
+    # MEDIA MANAGEMENT TABLES
+    # ============================================================
+
+    # Press Releases
+    cursor.execute("""
+        CREATE TABLE IF NOT EXISTS press_releases (
+            id INTEGER PRIMARY KEY AUTOINCREMENT,
+            title TEXT NOT NULL,
+            description TEXT NOT NULL,
+            release_date DATE NOT NULL,
+            created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+            updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+        )
+    """)
+
+    # Media Coverage
+    cursor.execute("""
+        CREATE TABLE IF NOT EXISTS media_coverage (
+            id INTEGER PRIMARY KEY AUTOINCREMENT,
+            title TEXT NOT NULL,
+            url TEXT NOT NULL,
+            created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+            updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+        )
+    """)
+
+    # Image Gallery
+    cursor.execute("""
+        CREATE TABLE IF NOT EXISTS image_gallery (
+            id INTEGER PRIMARY KEY AUTOINCREMENT,
+            image_path TEXT NOT NULL,
+            description TEXT,
+            uploaded_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+        )
+    """)
+
+    # Videos
+    cursor.execute("""
+        CREATE TABLE IF NOT EXISTS videos (
+            id INTEGER PRIMARY KEY AUTOINCREMENT,
+            video_url TEXT NOT NULL,
+            description TEXT,
+            uploaded_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+        )
+    """)
+
+    # ============================================================
+    # DEFAULT ADMIN ACCOUNT
+    # ============================================================
+
     existing_admin = cursor.execute(
         "SELECT id FROM users WHERE username = ?",
         ("admin",)
@@ -87,7 +151,10 @@ def init_database():
             ("admin", password_hash)
         )
 
-    # Add default Vision and Mission
+    # ============================================================
+    # DEFAULT VISION AND MISSION
+    # ============================================================
+
     existing_vision = cursor.execute(
         "SELECT id FROM vision_mission LIMIT 1"
     ).fetchone()
@@ -110,7 +177,10 @@ def init_database():
             "To work together with communities and individuals to create meaningful and sustainable development."
         ))
 
-    # Add default statistics
+    # ============================================================
+    # DEFAULT STATISTICS
+    # ============================================================
+
     existing_statistics = cursor.execute(
         "SELECT id FROM statistics LIMIT 1"
     ).fetchone()
@@ -130,7 +200,10 @@ def init_database():
             VALUES (?, ?, ?)
         """, statistics)
 
-    # Add default initiatives
+    # ============================================================
+    # DEFAULT INITIATIVES
+    # ============================================================
+
     existing_initiatives = cursor.execute(
         "SELECT id FROM initiatives LIMIT 1"
     ).fetchone()
@@ -164,10 +237,17 @@ def init_database():
             VALUES (?, ?, ?, ?)
         """, initiatives)
 
-    connection.commit()
+    # ============================================================
+    # SAVE DATABASE CHANGES
+    # ============================================================
 
+    connection.commit()
     connection.close()
 
+
+# ============================================================
+# RUN DATABASE INITIALIZATION
+# ============================================================
 
 if __name__ == "__main__":
     init_database()
